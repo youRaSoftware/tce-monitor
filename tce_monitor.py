@@ -66,7 +66,7 @@ THEATERS = [
 ]
 
 # Пауза между запросами к разным страницам — имитация человеческого поведения
-POLITENESS_DELAY_SECONDS = 2.0
+POLITENESS_DELAY_SECONDS = 1.0
 
 # Ленивое прорежение: после N пустых проверок отодвигаем следующую
 # (минуты до следующей проверки)
@@ -208,10 +208,8 @@ async def open_page(page, url: str, attempt: int = 1):
         DEBUG_DIR.mkdir(exist_ok=True)
         await page.screenshot(path=str(DEBUG_DIR / "anubis_stuck.png"))
         raise RuntimeError("Anubis не пропустил за 45 сек")
-    try:
-        await page.wait_for_load_state("networkidle", timeout=20_000)
-    except PWTimeout:
-        pass
+    # Не ждём networkidle — на этих страницах он редко наступает,
+    # уводит время на 20с таймауты. Caller сам подождёт нужный элемент.
 
 
 async def fetch_afisha(page, theater: dict) -> list:
@@ -276,6 +274,13 @@ def filter_shows(shows: list, watch_titles: list) -> list:
 
 async def count_free_seats(page) -> int:
     """Считает количество свободных мест на странице спектакля."""
+    # Ждём пока схема зала появится в DOM (это происходит быстро после Anubis)
+    try:
+        await page.wait_for_selector("td.place", timeout=10_000)
+    except PWTimeout:
+        # Нет схемы зала вообще — либо страница не загрузилась, либо
+        # у спектакля её просто нет. Считаем как 0.
+        return 0
     free = await page.evaluate(r"""
         () => document.querySelectorAll('td.zone').length
     """)
