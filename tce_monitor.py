@@ -273,14 +273,32 @@ def filter_shows(shows: list, watch_titles: list) -> list:
 
 
 async def count_free_seats(page) -> int:
-    """Считает количество свободных мест на странице спектакля."""
-    # Ждём пока схема зала появится в DOM (это происходит быстро после Anubis)
+    """Считает количество свободных мест на странице спектакля.
+
+    Схема зала на странице спектакля грузится через AJAX уже после самой
+    страницы. Признак того что AJAX отработал — у мест появляются
+    атрибуты data-col (для занятых) или класс 'zone' (для свободных).
+    Если просто читать td.zone сразу после загрузки страницы — получим 0,
+    потому что AJAX ещё не успел применить классы.
+    """
+    # Сначала ждём появления хоть какого-то td.place (это часть статического HTML)
     try:
         await page.wait_for_selector("td.place", timeout=10_000)
     except PWTimeout:
-        # Нет схемы зала вообще — либо страница не загрузилась, либо
-        # у спектакля её просто нет. Считаем как 0.
         return 0
+
+    # Затем ждём пока AJAX заполнит схему зала.
+    # td.place[data-col] = места с координатами (AJAX отработал, есть занятые)
+    # td.zone = свободные места
+    # Появление хотя бы одного из них = схема загружена
+    try:
+        await page.wait_for_function(
+            "() => document.querySelectorAll('td.place[data-col], td.zone').length > 0",
+            timeout=15_000,
+        )
+    except PWTimeout:
+        pass  # схема не догрузилась — посчитаем что есть
+
     free = await page.evaluate(r"""
         () => document.querySelectorAll('td.zone').length
     """)
