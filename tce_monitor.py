@@ -49,16 +49,6 @@ THEATERS = [
         "watch_titles": [],
     },
     {
-        "name": "Молодёжный театр",
-        "base": "OUMzMjg2NzUtMjhCNC00MzFBLUExMzYtMDAzREU5MTgzQTdF",
-        "watch_titles": [],
-    },
-    {
-        "name": "Белгосфилармония",
-        "base": "Nzk0QjIxQ0QtRjE5QS02NzQ3LTlBNTAtN0ZCNkE5MDI2NUJE",
-        "watch_titles": [],
-    },
-    {
         "name": "Театр юного зрителя",
         "base": "RUMxRjFDNzgtRkRDOS00NjI3LTg3QzAtMTlFOTk0MkNEQ0Yy",
         "watch_titles": [],
@@ -68,16 +58,12 @@ THEATERS = [
 # Пауза между запросами к разным страницам — имитация человеческого поведения
 POLITENESS_DELAY_SECONDS = 1.0
 
-# Ленивое прорежение: после N пустых проверок отодвигаем следующую
-# (минуты до следующей проверки)
-RECHECK_DELAY_MIN = {
-    "active":     30,   # были места или streak < 3 — проверять каждый цикл
-    "stale":      60,   # streak 3–9 — раз в час
-    "dormant":   180,   # streak 10+ — раз в три часа
-}
-
 # Стоп при серии ошибок
 MAX_ERRORS_IN_ROW = 5
+
+# Ежедневный "я живой" пинг в группу. Время в часах по Минску (UTC+3).
+# Например 9 = в 9 утра по Минску. None = отключить.
+DAILY_HEARTBEAT_HOUR_MINSK = 9
 
 STATE_FILE = Path(__file__).parent / "tce_state.json"
 DEBUG_DIR  = Path(__file__).parent / "debug"
@@ -131,6 +117,57 @@ def format_digest_message(shows: list) -> str:
     return "\n".join(lines)
 
 
+# ============ HEARTBEAT ============
+
+async def maybe_send_heartbeat(state: dict, all_shows: list, now: datetime):
+    """Раз в сутки шлёт "я живой" пинг в группу.
+
+    Хранит дату последнего пинга в state["__meta__"]["last_heartbeat_date"].
+    Шлёт когда: уже наступил час DAILY_HEARTBEAT_HOUR_MINSK по Минску
+    И сегодня ещё не слал.
+    """
+    if DAILY_HEARTBEAT_HOUR_MINSK is None:
+        return
+
+    # Минск = UTC+3 (без учёта переходов, в РБ их нет с 2014)
+    minsk_now = now + timedelta(hours=3)
+    today_minsk = minsk_now.date().isoformat()
+
+    meta = state.setdefault("__meta__", {})
+    last_date = meta.get("last_heartbeat_date")
+
+    # Уже слали сегодня — пропустить
+    if last_date == today_minsk:
+        return
+
+    # Час по Минску ещё не наступил — пропустить
+    if minsk_now.hour < DAILY_HEARTBEAT_HOUR_MINSK:
+        return
+
+    # Статистика по театрам
+    per_theater = {}
+    for s in all_shows:
+        t = s.get("theater_name", "?")
+        per_theater[t] = per_theater.get(t, 0) + 1
+
+    lines = [
+        f"🤖 <b>Доброе утро!</b>",
+        f"Бот работает, билетов пока нет.",
+        f"",
+        f"<b>Под наблюдением:</b>",
+    ]
+    for t, n in sorted(per_theater.items()):
+        lines.append(f"• {html.escape(t)} — {n} спектаклей")
+
+    total = sum(per_theater.values())
+    lines.append(f"")
+    lines.append(f"<i>Всего: {total} спектаклей. Проверяю каждые 30 минут.</i>")
+
+    await send_telegram("\n".join(lines))
+    meta["last_heartbeat_date"] = today_minsk
+    save_state(state)  # пересохранить с обновлённой датой
+
+
 # ============ STATE ============
 
 def load_state() -> dict:
@@ -146,39 +183,14 @@ def save_state(state: dict):
     )
 
 
-def should_check(entry: dict, now: datetime) -> bool:
-    """Решает, надо ли проверять этот спектакль в текущем цикле."""
-    if not entry:
-        return True
-    next_at = entry.get("next_check_at")
-    if not next_at:
-        return True
-    return now.isoformat() >= next_at
-
-
 def update_state_entry(entry: dict, now: datetime, free: int, show: dict) -> dict:
-    """Обновляет запись в state и рассчитывает время следующей проверки."""
+    """Обновляет запись в state."""
     entry["name"] = show["name"]
     entry["date"] = show["date"]
     entry["venue"] = show["venue"]
     entry["theater"] = show.get("theater_name", "")
     entry["last_count"] = free
     entry["last_check"] = now.isoformat()
-
-    if free > 0:
-        entry["empty_streak"] = 0
-        delay_min = RECHECK_DELAY_MIN["active"]
-    else:
-        streak = entry.get("empty_streak", 0) + 1
-        entry["empty_streak"] = streak
-        if streak < 3:
-            delay_min = RECHECK_DELAY_MIN["active"]
-        elif streak < 10:
-            delay_min = RECHECK_DELAY_MIN["stale"]
-        else:
-            delay_min = RECHECK_DELAY_MIN["dormant"]
-
-    entry["next_check_at"] = (now + timedelta(minutes=delay_min)).isoformat()
     return entry
 
 
@@ -360,9 +372,10 @@ async def main():
             except Exception as e:
                 print(f"[ERR афиша] {th['name']}: {e}", file=sys.stderr)
 
-        # ШАГ 2. Решаем что проверять
-        to_check = [s for s in all_shows if should_check(state.get(s["url"]), now)]
-        print(f"\n[ПЛАН] Всего: {len(all_shows)}, нужно проверить: {len(to_check)}")
+        # ШАГ 2. Проверяем ВСЕ спектакли каждый запуск. Нулевые места —
+        # это как раз то что мы ищем (момент 0 → >0), пропускать их нельзя.
+        to_check = all_shows
+        print(f"\n[ПЛАН] Всего: {len(all_shows)}, проверяю все")
 
         # ШАГ 3. Проверяем
         errors_in_row = 0
@@ -402,11 +415,16 @@ async def main():
         # ШАГ 4. Чистка устаревших (которых больше нет в афише)
         active_urls = {s["url"] for s in all_shows}
         for url in list(state.keys()):
+            if url.startswith("__"):  # служебные ключи типа __meta__ не трогаем
+                continue
             if url not in active_urls:
                 del state[url]
 
         save_state(state)
         await browser.close()
+
+        # Ежедневный heartbeat — отдельно от уведомлений, всегда после save_state
+        await maybe_send_heartbeat(state, all_shows, now)
 
         # ШАГ 5. Уведомления
         if not notifications:
