@@ -490,8 +490,11 @@ async def main():
                       f"{show['name']} {show['date']}: {free} мест "
                       f"(прежде: {prev_count}){debug_suffix}")
 
-                # Уведомляем
+                # Уведомляем СРАЗУ как нашли — чтобы не упустить пока скрипт
+                # обходит остальные 100+ спектаклей. На горячих местах счёт
+                # идёт на минуты.
                 if free > 0 and prev_count <= 0:
+                    await send_telegram(format_show_message({**show, "free": free}))
                     notifications.append({**show, "free": free})
 
                 errors_in_row = 0
@@ -522,16 +525,15 @@ async def main():
         # Ежедневный heartbeat
         await maybe_send_heartbeat(state, all_shows, now)
 
-        # ШАГ 5. Уведомления
+        # ШАГ 5. Итог (уведомления уже разосланы по ходу)
         if not notifications:
             print("\n[ИТОГ] Изменений нет.")
         elif len(notifications) <= 5:
-            print(f"\n[ИТОГ] Отправляю {len(notifications)} уведомлений.")
-            for n in notifications:
-                await send_telegram(format_show_message(n))
-                await asyncio.sleep(0.5)
+            print(f"\n[ИТОГ] Отправлено {len(notifications)} уведомлений.")
         else:
-            print(f"\n[ИТОГ] Слишком много ({len(notifications)}), шлю сводку.")
+            # Если уведомлений было много — добавим сводку в конце, чтобы
+            # удобно было пробежаться глазами одним сообщением
+            print(f"\n[ИТОГ] Отправлено {len(notifications)} уведомлений, шлю сводку.")
             await send_telegram(format_digest_message(notifications))
 
 
