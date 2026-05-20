@@ -312,29 +312,38 @@ def filter_shows(shows: list, watch_titles: list) -> list:
 async def count_free_seats(page) -> int:
     """Считает количество свободных мест на странице спектакля.
 
-    Схема зала на странице спектакля грузится через AJAX уже после самой
-    страницы. Признак того что AJAX отработал — у мест появляются
-    атрибуты data-col (для занятых) или класс 'zone' (для свободных).
-    Если просто читать td.zone сразу после загрузки страницы — получим 0,
-    потому что AJAX ещё не успел применить классы.
+    Схема зала на странице спектакля грузится через AJAX (doRequest 'shows'
+    'ticket'). До этого момента все места рендерятся одним классом 'place'
+    без data-col. После AJAX:
+      - занятые места получают data-col / data-row
+      - свободные дополнительно получают класс 'zone' + конкретную ценовую
+        зону (zone1080, zone1081 и т.п.)
+
+    Ждём пока на странице окажется заметное количество мест с data-col
+    (это значит AJAX точно отработал), плюс ещё короткая пауза на случай
+    нескольких проходов.
     """
-    # Сначала ждём появления хоть какого-то td.place (это часть статического HTML)
+    # Сначала убедимся что есть хоть какие-то места (структура есть)
     try:
         await page.wait_for_selector("td.place", timeout=10_000)
     except PWTimeout:
         return 0
 
-    # Затем ждём пока AJAX заполнит схему зала.
-    # td.place[data-col] = места с координатами (AJAX отработал, есть занятые)
-    # td.zone = свободные места
-    # Появление хотя бы одного из них = схема загружена
+    # Ждём пока AJAX заполнит данные. Признак: появились места с data-col.
+    # Используем большой таймаут — на GitHub Actions сеть может быть медленной.
     try:
         await page.wait_for_function(
-            "() => document.querySelectorAll('td.place[data-col], td.zone').length > 0",
-            timeout=15_000,
+            "() => document.querySelectorAll('td.place[data-col]').length > 0",
+            timeout=30_000,
         )
     except PWTimeout:
-        pass  # схема не догрузилась — посчитаем что есть
+        # AJAX так и не отработал. Это бывает если для конкретного спектакля
+        # схемы зала нет вообще (например, концерт без рассадки).
+        # Не возвращаем 0 сразу — попробуем посчитать что есть.
+        pass
+
+    # Небольшая пауза на случай если AJAX дозаполняет классы 'zone' порциями
+    await asyncio.sleep(1.5)
 
     free = await page.evaluate(r"""
         () => document.querySelectorAll('td.zone').length
@@ -347,6 +356,19 @@ async def count_free_seats(page) -> int:
 async def run_discovery(page, url: str):
     DEBUG_DIR.mkdir(exist_ok=True)
     await open_page(page, url)
+
+    # Если это страница спектакля — дождаться загрузки схемы зала
+    # (иначе скриншот будет с надписью "Подождите...")
+    if "shows.html" in url:
+        try:
+            await page.wait_for_function(
+                "() => document.querySelectorAll('td.place[data-col]').length > 0",
+                timeout=30_000,
+            )
+            await asyncio.sleep(1.5)
+        except PWTimeout:
+            print("[WARN] схема зала не догрузилась за 30 сек, сохраняю как есть")
+
     prefix = "afisha" if "index.html" in url else "show"
     html_path = DEBUG_DIR / f"{prefix}_page.html"
     png_path  = DEBUG_DIR / f"{prefix}_page.png"
