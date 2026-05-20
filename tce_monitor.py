@@ -48,11 +48,6 @@ THEATERS = [
         "base": "RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0",
         "watch_titles": [],
     },
-    {
-        "name": "Театр юного зрителя",
-        "base": "RUMxRjFDNzgtRkRDOS00NjI3LTg3QzAtMTlFOTk0MkNEQ0Yy",
-        "watch_titles": [],
-    },
 ]
 
 # Пауза между запросами к разным страницам — имитация человеческого поведения
@@ -477,18 +472,9 @@ async def main():
                 )
 
                 stamp = now.strftime("%H:%M")
-                debug_suffix = (
-                    f"  [dc={stats.get('place_dc')}, "
-                    f"zone={stats.get('zone')}, "
-                    f"load={int(stats.get('loading_visible', False))}, "
-                    f"retry={int(stats.get('retried', False))}"
-                )
-                if stats.get("retried"):
-                    debug_suffix += f", zone2={stats.get('zone_after_retry')}"
-                debug_suffix += "]"
                 print(f"  [{stamp}] {show['theater_name']} | "
                       f"{show['name']} {show['date']}: {free} мест "
-                      f"(прежде: {prev_count}){debug_suffix}")
+                      f"(прежде: {prev_count})")
 
                 # Уведомляем СРАЗУ как нашли — чтобы не упустить пока скрипт
                 # обходит остальные 100+ спектаклей. На горячих местах счёт
