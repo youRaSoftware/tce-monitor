@@ -212,14 +212,25 @@ async def open_page(page, url: str, attempt: int = 1):
         raise
 
     try:
+        # Anubis показывает страницу с <script id="anubis_challenge">.
+        # Ждём пока этот элемент пропадёт из DOM — это значит PoW решён
+        # и нас перенаправили на нужную страницу.
+        # Заодно проверяем что текста про "бот" нет (русская и английская версии).
         await page.wait_for_function(
-            "() => !document.body.innerText.toLowerCase().includes('not a bot')",
-            timeout=45_000,
+            """() => {
+                if (document.getElementById('anubis_challenge')) return false;
+                const t = document.body.innerText.toLowerCase();
+                if (t.includes('not a bot')) return false;
+                if (t.includes('не бот')) return false;
+                if (t.includes('проверяем')) return false;
+                return true;
+            }""",
+            timeout=60_000,
         )
     except PWTimeout:
         DEBUG_DIR.mkdir(exist_ok=True)
         await page.screenshot(path=str(DEBUG_DIR / "anubis_stuck.png"))
-        raise RuntimeError("Anubis не пропустил за 45 сек")
+        raise RuntimeError("Anubis не пропустил за 60 сек")
     # Не ждём networkidle — на этих страницах он редко наступает,
     # уводит время на 20с таймауты. Caller сам подождёт нужный элемент.
 
