@@ -441,12 +441,30 @@ async def main():
         to_check = all_shows
         print(f"\n[ПЛАН] Всего: {len(all_shows)}, проверяю все")
 
-        shows_context = await make_context()
-        shows_page = await shows_context.new_page()
+        # Пересоздаём сессию каждые SESSION_ROTATE_EVERY спектаклей.
+        # Без этого сервер начинает отдавать "всё занято" после ~100 запросов.
+        SESSION_ROTATE_EVERY = 20
+
+        shows_context = None
+        shows_page = None
+
+        async def reset_shows_session():
+            nonlocal shows_context, shows_page
+            if shows_context is not None:
+                await shows_context.close()
+            shows_context = await make_context()
+            shows_page = await shows_context.new_page()
+            print(f"[СЕССИЯ] открыта новая сессия (Anubis solve…)")
+
+        await reset_shows_session()
 
         # ШАГ 3. Проверяем
         errors_in_row = 0
-        for show in to_check:
+        for idx, show in enumerate(to_check):
+            # Каждые N спектаклей — пересоздаём сессию
+            if idx > 0 and idx % SESSION_ROTATE_EVERY == 0:
+                await reset_shows_session()
+
             try:
                 await open_page(shows_page, show["url"])
                 free, stats = await count_free_seats(shows_page)
