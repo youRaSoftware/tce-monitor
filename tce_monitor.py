@@ -228,6 +228,23 @@ async def open_page(page, url: str, attempt: int = 1):
         DEBUG_DIR.mkdir(exist_ok=True)
         await page.screenshot(path=str(DEBUG_DIR / "anubis_stuck.png"))
         raise RuntimeError("Anubis не пропустил за 60 сек")
+
+    # На сайте tce.by есть индикатор загрузки <div id="loading"> с текстом
+    # "Подождите, идет загрузка данных...". Он показывается пока AJAX-запрос
+    # за схемой зала / списком спектаклей в работе, и прячется когда готов.
+    # Это самый надёжный признак "страница полностью готова".
+    try:
+        await page.wait_for_function(
+            """() => {
+                const el = document.getElementById('loading');
+                if (!el) return true;            // нет такого элемента — значит и не надо ждать
+                if (el.offsetParent === null) return true;  // элемент скрыт (display:none)
+                return false;                    // ещё видим — ждём
+            }""",
+            timeout=20_000,
+        )
+    except PWTimeout:
+        pass  # если не дождались — пусть caller сам разбирается
     # Не ждём networkidle — на этих страницах он редко наступает,
     # уводит время на 20с таймауты. Caller сам подождёт нужный элемент.
 
