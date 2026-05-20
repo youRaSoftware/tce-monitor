@@ -63,6 +63,6 @@ jobs:
           git add -f tce_state.json || true
           git diff --staged --quiet || git commit -m "state: $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do
-            git pull --rebase || true
             git push && break
+            git pull --rebase -X ours || git rebase --abort
           done
