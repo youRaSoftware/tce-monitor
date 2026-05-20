@@ -4,6 +4,19 @@ on:
   schedule:
     - cron: '7,37 * * * *'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Режим запуска'
+        required: false
+        default: 'monitor'
+        type: choice
+        options:
+          - monitor
+          - discovery
+      discovery_url:
+        description: 'URL для разведки (только для discovery)'
+        required: false
+        default: ''
 
 jobs:
   monitor:
@@ -29,7 +42,18 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MODE: ${{ inputs.mode || 'monitor' }}
+          DISCOVERY_URL: ${{ inputs.discovery_url || '' }}
         run: python tce_monitor.py
+
+      - name: Upload debug artifacts (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-${{ github.run_id }}
+          path: debug/
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Commit updated state
         run: |
