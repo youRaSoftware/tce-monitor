@@ -56,7 +56,7 @@ THEATERS = [
 ]
 
 # Пауза между запросами к разным страницам — имитация человеческого поведения
-POLITENESS_DELAY_SECONDS = 1.0
+POLITENESS_DELAY_SECONDS = 3.0
 
 # Стоп при серии ошибок
 MAX_ERRORS_IN_ROW = 5
@@ -309,46 +309,44 @@ def filter_shows(shows: list, watch_titles: list) -> list:
     return [s for s in shows if any(n in s["name"].lower() for n in needles)]
 
 
-async def count_free_seats(page) -> int:
+async def count_free_seats(page) -> tuple[int, dict]:
     """Считает количество свободных мест на странице спектакля.
 
-    Схема зала на странице спектакля грузится через AJAX (doRequest 'shows'
-    'ticket'). До этого момента все места рендерятся одним классом 'place'
-    без data-col. После AJAX:
-      - занятые места получают data-col / data-row
-      - свободные дополнительно получают класс 'zone' + конкретную ценовую
-        зону (zone1080, zone1081 и т.п.)
-
-    Ждём пока на странице окажется заметное количество мест с data-col
-    (это значит AJAX точно отработал), плюс ещё короткая пауза на случай
-    нескольких проходов.
+    Возвращает (количество, debug_stats) для отладки.
     """
-    # Сначала убедимся что есть хоть какие-то места (структура есть)
+    # Сначала убедимся что есть хоть какие-то места
     try:
         await page.wait_for_selector("td.place", timeout=10_000)
     except PWTimeout:
-        return 0
+        return 0, {"err": "no td.place at all"}
 
-    # Ждём пока AJAX заполнит данные. Признак: появились места с data-col.
-    # Используем большой таймаут — на GitHub Actions сеть может быть медленной.
+    # Ждём пока AJAX заполнит данные
+    ajax_ok = True
     try:
         await page.wait_for_function(
             "() => document.querySelectorAll('td.place[data-col]').length > 0",
             timeout=30_000,
         )
     except PWTimeout:
-        # AJAX так и не отработал. Это бывает если для конкретного спектакля
-        # схемы зала нет вообще (например, концерт без рассадки).
-        # Не возвращаем 0 сразу — попробуем посчитать что есть.
-        pass
+        ajax_ok = False
 
-    # Небольшая пауза на случай если AJAX дозаполняет классы 'zone' порциями
+    # Доп пауза на финализацию
     await asyncio.sleep(1.5)
 
-    free = await page.evaluate(r"""
-        () => document.querySelectorAll('td.zone').length
+    # Замеряем всё разом с подробностями
+    stats = await page.evaluate(r"""
+        () => ({
+            place: document.querySelectorAll('td.place').length,
+            place_dc: document.querySelectorAll('td.place[data-col]').length,
+            zone: document.querySelectorAll('td.zone').length,
+            loading_visible: (function() {
+                const el = document.getElementById('loading');
+                return el ? el.offsetParent !== null : false;
+            })(),
+        })
     """)
-    return int(free)
+    stats["ajax_ok"] = ajax_ok
+    return int(stats["zone"]), stats
 
 
 # ============ РЕЖИМ РАЗВЕДКИ ============
@@ -429,7 +427,7 @@ async def main():
         for show in to_check:
             try:
                 await open_page(page, show["url"])
-                free = await count_free_seats(page)
+                free, stats = await count_free_seats(page)
 
                 prev_entry = state.get(show["url"], {})
                 prev_count = prev_entry.get("last_count", -1)
@@ -439,9 +437,18 @@ async def main():
                 )
 
                 stamp = now.strftime("%H:%M")
+                # Если AJAX не отработал — это плохой знак, выводим детали
+                debug_suffix = ""
+                if not stats.get("ajax_ok") or stats.get("place_dc", 0) == 0:
+                    debug_suffix = (
+                        f"  ⚠️ debug: place={stats.get('place')}, "
+                        f"dc={stats.get('place_dc')}, "
+                        f"zone={stats.get('zone')}, "
+                        f"loading_vis={stats.get('loading_visible')}"
+                    )
                 print(f"  [{stamp}] {show['theater_name']} | "
                       f"{show['name']} {show['date']}: {free} мест "
-                      f"(прежде: {prev_count})")
+                      f"(прежде: {prev_count}){debug_suffix}")
 
                 # Уведомляем: появились места после "пусто" или впервые увидели
                 if free > 0 and prev_count <= 0:
