@@ -395,18 +395,21 @@ async def run_discovery(page, url: str):
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-            ),
-            viewport={"width": 1280, "height": 800},
-            locale="ru-RU",
-        )
-        page = await context.new_page()
+
+        def make_context():
+            return browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1280, "height": 800},
+                locale="ru-RU",
+            )
 
         # --- режим разведки ---
         if MODE == "discovery":
+            context = await make_context()
+            page = await context.new_page()
             url = DISCOVERY_URL or f"https://tce.by/index.html?base={THEATERS[0]['base']}"
             await run_discovery(page, url)
             await browser.close()
@@ -417,11 +420,13 @@ async def main():
         now = datetime.now(timezone.utc)
         notifications = []
 
-        # ШАГ 1. Собираем афиши всех театров
+        # ШАГ 1. Собираем афиши всех театров (отдельный context)
+        afisha_context = await make_context()
+        afisha_page = await afisha_context.new_page()
         all_shows = []
         for th in THEATERS:
             try:
-                shows = await fetch_afisha(page, th)
+                shows = await fetch_afisha(afisha_page, th)
                 shows = filter_shows(shows, th.get("watch_titles", []))
                 for s in shows:
                     s["theater_name"] = th["name"]
@@ -430,18 +435,21 @@ async def main():
                 await asyncio.sleep(POLITENESS_DELAY_SECONDS)
             except Exception as e:
                 print(f"[ERR афиша] {th['name']}: {e}", file=sys.stderr)
+        await afisha_context.close()  # закрываем сессию афиш — её cookies нам мешают
 
-        # ШАГ 2. Проверяем ВСЕ спектакли каждый запуск. Нулевые места —
-        # это как раз то что мы ищем (момент 0 → >0), пропускать их нельзя.
+        # ШАГ 2. Проверяем ВСЕ спектакли (свежий context, без афишных cookies)
         to_check = all_shows
         print(f"\n[ПЛАН] Всего: {len(all_shows)}, проверяю все")
+
+        shows_context = await make_context()
+        shows_page = await shows_context.new_page()
 
         # ШАГ 3. Проверяем
         errors_in_row = 0
         for show in to_check:
             try:
-                await open_page(page, show["url"])
-                free, stats = await count_free_seats(page)
+                await open_page(shows_page, show["url"])
+                free, stats = await count_free_seats(shows_page)
 
                 prev_entry = state.get(show["url"], {})
                 prev_count = prev_entry.get("last_count", -1)
@@ -451,7 +459,6 @@ async def main():
                 )
 
                 stamp = now.strftime("%H:%M")
-                # Всегда выводим debug — нам сейчас нужно понять что происходит
                 debug_suffix = (
                     f"  [dc={stats.get('place_dc')}, "
                     f"zone={stats.get('zone')}, "
@@ -465,7 +472,7 @@ async def main():
                       f"{show['name']} {show['date']}: {free} мест "
                       f"(прежде: {prev_count}){debug_suffix}")
 
-                # Уведомляем: появились места после "пусто" или впервые увидели
+                # Уведомляем
                 if free > 0 and prev_count <= 0:
                     notifications.append({**show, "free": free})
 
@@ -481,10 +488,12 @@ async def main():
                     )
                     break
 
-        # ШАГ 4. Чистка устаревших (которых больше нет в афише)
+        await shows_context.close()
+
+        # ШАГ 4. Чистка устаревших
         active_urls = {s["url"] for s in all_shows}
         for url in list(state.keys()):
-            if url.startswith("__"):  # служебные ключи типа __meta__ не трогаем
+            if url.startswith("__"):
                 continue
             if url not in active_urls:
                 del state[url]
@@ -492,7 +501,7 @@ async def main():
         save_state(state)
         await browser.close()
 
-        # Ежедневный heartbeat — отдельно от уведомлений, всегда после save_state
+        # Ежедневный heartbeat
         await maybe_send_heartbeat(state, all_shows, now)
 
         # ШАГ 5. Уведомления
