@@ -314,13 +314,11 @@ async def count_free_seats(page) -> tuple[int, dict]:
 
     Возвращает (количество, debug_stats) для отладки.
     """
-    # Сначала убедимся что есть хоть какие-то места
     try:
         await page.wait_for_selector("td.place", timeout=10_000)
     except PWTimeout:
         return 0, {"err": "no td.place at all"}
 
-    # Ждём пока AJAX заполнит данные
     ajax_ok = True
     try:
         await page.wait_for_function(
@@ -330,22 +328,38 @@ async def count_free_seats(page) -> tuple[int, dict]:
     except PWTimeout:
         ajax_ok = False
 
-    # Доп пауза на финализацию
     await asyncio.sleep(1.5)
 
-    # Замеряем всё разом с подробностями
-    stats = await page.evaluate(r"""
-        () => ({
-            place: document.querySelectorAll('td.place').length,
-            place_dc: document.querySelectorAll('td.place[data-col]').length,
-            zone: document.querySelectorAll('td.zone').length,
-            loading_visible: (function() {
-                const el = document.getElementById('loading');
-                return el ? el.offsetParent !== null : false;
-            })(),
-        })
-    """)
+    async def measure():
+        return await page.evaluate(r"""
+            () => ({
+                place: document.querySelectorAll('td.place').length,
+                place_dc: document.querySelectorAll('td.place[data-col]').length,
+                zone: document.querySelectorAll('td.zone').length,
+                loading_visible: (function() {
+                    const el = document.getElementById('loading');
+                    return el ? el.offsetParent !== null : false;
+                })(),
+            })
+        """)
+
+    stats = await measure()
     stats["ajax_ok"] = ajax_ok
+    stats["retried"] = False
+
+    # Если AJAX вроде отработал (есть data-col), но мест нет — попробуем
+    # подождать ещё и пересчитать. Может класс zone применяется второй
+    # волной AJAX.
+    if stats["place_dc"] > 0 and stats["zone"] == 0:
+        await asyncio.sleep(5)
+        stats2 = await measure()
+        stats["retried"] = True
+        stats["zone_after_retry"] = stats2["zone"]
+        stats["loading_after_retry"] = stats2["loading_visible"]
+        # Берём максимум — если ретрай нашёл места, используем его
+        if stats2["zone"] > stats["zone"]:
+            stats["zone"] = stats2["zone"]
+
     return int(stats["zone"]), stats
 
 
@@ -437,15 +451,16 @@ async def main():
                 )
 
                 stamp = now.strftime("%H:%M")
-                # Если AJAX не отработал — это плохой знак, выводим детали
-                debug_suffix = ""
-                if not stats.get("ajax_ok") or stats.get("place_dc", 0) == 0:
-                    debug_suffix = (
-                        f"  ⚠️ debug: place={stats.get('place')}, "
-                        f"dc={stats.get('place_dc')}, "
-                        f"zone={stats.get('zone')}, "
-                        f"loading_vis={stats.get('loading_visible')}"
-                    )
+                # Всегда выводим debug — нам сейчас нужно понять что происходит
+                debug_suffix = (
+                    f"  [dc={stats.get('place_dc')}, "
+                    f"zone={stats.get('zone')}, "
+                    f"load={int(stats.get('loading_visible', False))}, "
+                    f"retry={int(stats.get('retried', False))}"
+                )
+                if stats.get("retried"):
+                    debug_suffix += f", zone2={stats.get('zone_after_retry')}"
+                debug_suffix += "]"
                 print(f"  [{stamp}] {show['theater_name']} | "
                       f"{show['name']} {show['date']}: {free} мест "
                       f"(прежде: {prev_count}){debug_suffix}")
