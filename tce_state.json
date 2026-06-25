@@ -1,5 +1,165 @@
 {
   "__meta__": {
     "last_heartbeat_date": "2026-06-25"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4744": {
+    "name": "Пансион «Belvedere»",
+    "date": "июнь, 26, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4746": {
+    "name": "МРОIВА",
+    "date": "июнь, 27, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4745": {
+    "name": "Записки юного врача",
+    "date": "июнь, 27, 19:00",
+    "venue": "Центральный Дом офицеров",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4748": {
+    "name": "МРОIВА",
+    "date": "июнь, 28, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4747": {
+    "name": "Записки юного врача",
+    "date": "июнь, 28, 19:00",
+    "venue": "Центральный Дом офицеров",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4765": {
+    "name": "МРОIВА",
+    "date": "июль, 3, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4766": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 10, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4767": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 11, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4768": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 12, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4769": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 14, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4770": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 15, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4771": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 16, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4772": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 17, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4773": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 18, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4774": {
+    "name": "Леди Макбет Мценского уезда",
+    "date": "июль, 19, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4775": {
+    "name": "Записки юного врача",
+    "date": "июль, 21, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4776": {
+    "name": "Записки юного врача",
+    "date": "июль, 22, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4777": {
+    "name": "На чёрной-чёрной улице",
+    "date": "июль, 23, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4778": {
+    "name": "На чёрной-чёрной улице",
+    "date": "июль, 24, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4779": {
+    "name": "На чёрной-чёрной улице",
+    "date": "июль, 25, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-06-25T10:45:42.536000+00:00"
   }
 }
