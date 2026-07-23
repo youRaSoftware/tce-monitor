@@ -2,29 +2,13 @@
   "__meta__": {
     "last_heartbeat_date": "2026-07-23"
   },
-  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4916": {
-    "name": "Экскурсия",
-    "date": "июль, 23, 11:00",
-    "venue": "Белорусский государственный театр кукол -- услуги",
-    "theater": "Театр кукол",
-    "last_count": 0,
-    "last_check": "2026-07-23T20:45:58.346235+00:00"
-  },
-  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4777": {
-    "name": "На чёрной-чёрной улице",
-    "date": "июль, 23, 19:00",
-    "venue": "Белорусский государственный театр кукол",
-    "theater": "Театр кукол",
-    "last_count": 0,
-    "last_check": "2026-07-23T20:45:58.346235+00:00"
-  },
   "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4778": {
     "name": "На чёрной-чёрной улице",
     "date": "июль, 24, 19:00",
     "venue": "Белорусский государственный театр кукол",
     "theater": "Театр кукол",
     "last_count": 0,
-    "last_check": "2026-07-23T20:45:58.346235+00:00"
+    "last_check": "2026-07-23T21:01:12.145419+00:00"
   },
   "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4779": {
     "name": "На чёрной-чёрной улице",
@@ -32,6 +16,6 @@
     "venue": "Белорусский государственный театр кукол",
     "theater": "Театр кукол",
     "last_count": 0,
-    "last_check": "2026-07-23T20:45:58.346235+00:00"
+    "last_check": "2026-07-23T21:01:12.145419+00:00"
   }
 }
