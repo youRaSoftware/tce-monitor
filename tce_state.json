@@ -1,5 +1,277 @@
 {
   "__meta__": {
     "last_heartbeat_date": "2026-08-27"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4921": {
+    "name": "На чёрной-чёрной улице",
+    "date": "сентябрь, 2, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4922": {
+    "name": "На чёрной-чёрной улице",
+    "date": "сентябрь, 3, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4923": {
+    "name": "На чёрной-чёрной улице",
+    "date": "сентябрь, 4, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4926": {
+    "name": "Леди М.ценского уезда",
+    "date": "сентябрь, 8, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4927": {
+    "name": "Леди М.ценского уезда",
+    "date": "сентябрь, 9, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4928": {
+    "name": "Леди М.ценского уезда",
+    "date": "сентябрь, 10, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4929": {
+    "name": "Ноч перад калядамi",
+    "date": "сентябрь, 11, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4930": {
+    "name": "Кот в сапогах",
+    "date": "сентябрь, 12, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4932": {
+    "name": "Бабочки",
+    "date": "сентябрь, 12, 11:15",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4933": {
+    "name": "Бабочки",
+    "date": "сентябрь, 12, 12:30",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4931": {
+    "name": "Кот в сапогах",
+    "date": "сентябрь, 12, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4934": {
+    "name": "Волк и семеро козлят",
+    "date": "сентябрь, 13, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4936": {
+    "name": "Бабочки",
+    "date": "сентябрь, 13, 11:15",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4937": {
+    "name": "Бабочки",
+    "date": "сентябрь, 13, 12:30",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4935": {
+    "name": "Волк и семеро козлят",
+    "date": "сентябрь, 13, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4939": {
+    "name": "Волшебное путешествие",
+    "date": "сентябрь, 19, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4940": {
+    "name": "Волшебное путешествие",
+    "date": "сентябрь, 19, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4941": {
+    "name": "Волшебное путешествие",
+    "date": "сентябрь, 20, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4943": {
+    "name": "Бабочки",
+    "date": "сентябрь, 20, 11:15",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4944": {
+    "name": "Бабочки",
+    "date": "сентябрь, 20, 12:30",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4942": {
+    "name": "Волшебное путешествие",
+    "date": "сентябрь, 20, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4945": {
+    "name": "Хутар",
+    "date": "сентябрь, 23, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4946": {
+    "name": "Хутар",
+    "date": "сентябрь, 24, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4947": {
+    "name": "Пансион «Belvedere»",
+    "date": "сентябрь, 25, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4948": {
+    "name": "Тутта Карлссон. Первая и единственная",
+    "date": "сентябрь, 26, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4950": {
+    "name": "Бабочки",
+    "date": "сентябрь, 26, 11:15",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4951": {
+    "name": "Бабочки",
+    "date": "сентябрь, 26, 12:30",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4949": {
+    "name": "Тутта Карлссон. Первая и единственная",
+    "date": "сентябрь, 26, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4952": {
+    "name": "Проданный смех",
+    "date": "сентябрь, 27, 11:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4954": {
+    "name": "Бабочки",
+    "date": "сентябрь, 27, 11:15",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4955": {
+    "name": "Бабочки",
+    "date": "сентябрь, 27, 12:30",
+    "venue": "Белорусский государственный театр кукол - малая сцена",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4953": {
+    "name": "Проданный смех",
+    "date": "сентябрь, 27, 14:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4956": {
+    "name": "Записки юного врача",
+    "date": "сентябрь, 29, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
+  },
+  "https://tce.by/shows.html?base=RkZDMTE2MUQtMTNFNy00NUIyLTg0QzYtMURDMjRBNTc1ODA0&data=4957": {
+    "name": "Записки юного врача",
+    "date": "сентябрь, 30, 19:00",
+    "venue": "Белорусский государственный театр кукол",
+    "theater": "Театр кукол",
+    "last_count": 0,
+    "last_check": "2026-08-27T10:01:14.644101+00:00"
   }
 }
