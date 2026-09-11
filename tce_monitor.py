@@ -389,7 +389,10 @@ async def run_discovery(page, url: str):
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(
+    headless=True,
+    args=["--disable-http2"],
+)
 
         def make_context():
             return browser.new_context(
